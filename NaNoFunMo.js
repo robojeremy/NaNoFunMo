@@ -1,4 +1,4 @@
-/*  NaNoFunMo.js ver. 0.1.10 Pre-NaNoWriMo Bot */
+/*  NaNoFunMo.js ver. 0.2.1 NaNoWriMo Bot */
 /*  
 	NaNoFunMo will algorithmically write a 50,000 word novel 
 	which may or may not be gibberish during NaNoWriMo. 
@@ -10,35 +10,139 @@
 	ThinkFun, and WriteFun to do all that.
 */
 
-
-
 var nanofunmozone;
+var readfunzone;
+var learnfunzone;
+var thinkfunzone;
+var writefunzone;
+//state 0: initializing or not operating
+//state 1: readfun is reading
+//state 2: learnfun is learning
+//state 3: thinkfun is thinking
+//state 4: writefun is writing
+var nanofunmostate;
+//step 0: building title area
+//step 1: building NaNoFunMoZone
+//step 2: building ReadFunZone
+//step 3: building LearnFunZone
+//step 4: building ThinkFunZone
+//step 5: building WriteFunZone
+var initstep;
+var contents = [];
+var contentcount;
+var elements = [];
+var elementcount;
+var currzone;
 
 function setup() {
 	noCanvas();
 
 	console.log("NaNoFunMo started");
 
-	nanofunmozone = createDiv('');
-	nanofunmozone.id('NaNoFunMoZone');
-	nanofunmozone.class('zone');
-	nanofunmozone.style('background-color','whitesmoke');
-	nanofunmozone.style('border-color','dimgrey');
-	createElement('h3', 'NaNoFunMo Lives Here').parent('NaNoFunMoZone');
+	initstep = 0; //building
+	nanofunmostate = -1; //initializing 
+	contentcount = 0;
+	elementcount = 0;
 
-	createP('/* NaNoFunMo is going to write. In order to write, NaNoFunMo will need to think. In order to think, NaNoFunMo will need to learn. In order to learn, NaNoFunMo will need to read. */').parent('NaNoFunMoZone');
+	contents[0] = [
+		["div", "TitleZone", ""],
+		["h2", "maintitle", "NaNoFunMo ver. 0.2.1 NaNoWriMo Bot"],
+		["p", "maindescription", "/* NaNoFunMo will algorithmically write a 50,000 word novel which may or may not be gibberish during NaNoWriMo. */"]
+	]
+	contents[1] = [
+		["div", "NaNoFunMoZone", ""],
+		["h3", "nnfh", "NaNoFunMo Lives Here"],
+		["p", "nnfp1", "/* NaNoFunMo is going to write. In order to write, NaNoFunMo will need to think. In order to think, NaNoFunMo will need to learn. In order to learn, NaNoFunMo will need to read. */"],
+//		["p", "nnfp2", "NaNoFunMo is creating ReadFun..."],
+//		["p", "nnfp3", "NaNoFunMo is creating LearnFun..."],
+//		["p", "nnfp4", "NaNoFunMo is creating ThinkFun..."],
+//		["p", "nnfp5", "NaNoFunMo is creating WriteFun..."]
+	]
+	contents[2] = [
+		["div", "ReadFunZone", ""],
+		["h3", "rfh", "ReadFun Lives Here"],
+		["p", "rfp1", "/* ReadFun will read books. */"]
+	]
+	contents[3] = [
+		["div", "LearnFunZone", ""],
+		["h3", "lfh", "LearnFun Lives Here"],
+		["p", "lfp1", "/* LearnFun will learn from the books ReadFun reads. */"]
+	]
+	contents[4] = [
+		["div", "ThinkFunZone", ""],
+		["h3", "tfh", "ThinkFun Lives Here"],
+		["p", "tfp1", "/* ThinkFun will think about the stuff that LearnFun learns. */"]
+	]
+	contents[5] = [
+		["div", "WriteFunZone", ""],
+		["h3", "wfh", "WriteFun Lives Here"],
+		["p", "wfp1", "/* WriteFun will write based on stuff ThinkFun thinks. */"]
+	]
 
-	createP('NaNoFunMo is creating ReadFun...').parent('NaNoFunMoZone');
-	rfsetup();
+	setTimeout(nanofunmo, 20);
+}
 
-	createP('NaNoFunMo is creating LearnFun...').parent('NaNoFunMoZone');
-	lfsetup();
+function nanofunmo() {
 
-	createP('NaNoFunMo is creating ThinkFun...').parent('NaNoFunMoZone');
-	tfsetup();
+	switch (nanofunmostate) {
+		case -1: //state -1: initializing 
+			if (typingdone == true) { //wait until TypeFun is ready
 
-	createP('NaNoFunMo is creating WriteFun...').parent('NaNoFunMoZone');
-	wfsetup();
+				if ( initstep < contents.length ) { 
 
-	console.log("NaNoFunMo done");
+					if (contentcount < contents[initstep].length) { 
+						var eltag = contents[initstep][contentcount][0];
+						var elid = contents[initstep][contentcount][1];
+						var eltext = contents[initstep][contentcount][2];
+						elements[elementcount] = createElement(eltag, '');
+						elements[elementcount].id(elid);
+
+						if ( eltag == "div" ) { //element is a div
+							currzone = elid;
+						} else { //element is inside a div
+							elements[elementcount].parent(currzone);
+						}
+
+						typefun('#' + elid, eltext);
+
+						contentcount++;
+					} else {
+						contentcount = 0;
+						initstep++;
+					}
+
+				} else {
+
+					nanofunmostate = 0;
+				}
+
+//				rfsetup();
+
+//				lfsetup();
+
+//				tfsetup();
+
+//				wfsetup();
+
+			}
+			break;
+		case 0: //state 0: not operating
+
+			break;
+		case 1: //state 1: readfun is reading
+
+			break;
+		case 2: //state 2: learnfun is learning
+
+			break;
+		case 3: //state 3: thinkfun is thinking
+
+			break;
+		case 4: //state 4: writefun is writing
+
+			break;
+		default:
+	}
+
+	setTimeout(nanofunmo, 20);
 }

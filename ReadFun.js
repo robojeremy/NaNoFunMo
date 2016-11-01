@@ -8,20 +8,10 @@
 	to WriteFun
 */
 
-var readfunzone;
 var readfuninput;
 var readfundata;
 
 function rfsetup() {
-	readfunzone = createDiv('');
-	readfunzone.id('ReadFunZone');
-	readfunzone.class('zone');
-	readfunzone.style('background-color','mistyrose');
-	readfunzone.style('border-color','darkred');
-	createElement('h3', 'ReadFun Lives Here').parent('ReadFunZone');
-
-	createP('/* ReadFun will read books. */').parent('ReadFunZone');
-
 	createP('ReadFun Input:').parent('ReadFunZone');
 	readfuninput = createInput();
 	readfuninput.parent('ReadFunZone');
