@@ -1,4 +1,4 @@
-/*  NaNoFunMo.js ver. 0.2.1 NaNoWriMo Bot */
+/*  NaNoFunMo.js ver. 0.2.2 NaNoWriMo Bot */
 /*  
 	NaNoFunMo will algorithmically write a 50,000 word novel 
 	which may or may not be gibberish during NaNoWriMo. 
@@ -10,11 +10,6 @@
 	ThinkFun, and WriteFun to do all that.
 */
 
-var nanofunmozone;
-var readfunzone;
-var learnfunzone;
-var thinkfunzone;
-var writefunzone;
 //state 0: initializing or not operating
 //state 1: readfun is reading
 //state 2: learnfun is learning
@@ -46,17 +41,13 @@ function setup() {
 
 	contents[0] = [
 		["div", "TitleZone", ""],
-		["h2", "maintitle", "NaNoFunMo ver. 0.2.1 NaNoWriMo Bot"],
+		["h2", "maintitle", "NaNoFunMo ver. 0.2.2 NaNoWriMo Bot"],
 		["p", "maindescription", "/* NaNoFunMo will algorithmically write a 50,000 word novel which may or may not be gibberish during NaNoWriMo. */"]
 	]
 	contents[1] = [
 		["div", "NaNoFunMoZone", ""],
 		["h3", "nnfh", "NaNoFunMo Lives Here"],
-		["p", "nnfp1", "/* NaNoFunMo is going to write. In order to write, NaNoFunMo will need to think. In order to think, NaNoFunMo will need to learn. In order to learn, NaNoFunMo will need to read. */"],
-//		["p", "nnfp2", "NaNoFunMo is creating ReadFun..."],
-//		["p", "nnfp3", "NaNoFunMo is creating LearnFun..."],
-//		["p", "nnfp4", "NaNoFunMo is creating ThinkFun..."],
-//		["p", "nnfp5", "NaNoFunMo is creating WriteFun..."]
+		["p", "nnfp1", "/* NaNoFunMo is going to write. In order to write, NaNoFunMo will need to think. In order to think, NaNoFunMo will need to learn. In order to learn, NaNoFunMo will need to read. */"]
 	]
 	contents[2] = [
 		["div", "ReadFunZone", ""],
@@ -99,32 +90,46 @@ function nanofunmo() {
 
 						if ( eltag == "div" ) { //element is a div
 							currzone = elid;
-						} else { //element is inside a div
+						} else if ( eltag == "p" ) { //element is inside a div
 							elements[elementcount].parent(currzone);
+							elements[elementcount].html(eltext);
+						} else { //h2, h3
+							elements[elementcount].parent(currzone);
+							typefun('#' + elid, eltext);
 						}
-
-						typefun('#' + elid, eltext);
 
 						contentcount++;
 					} else {
+
+						switch (initstep) {
+							case 2: //ReadFun
+								rfsetup();
+								break;
+							case 3: //LearnFun
+								lfsetup();
+								break;
+							case 4: //ThinkFun
+								tfsetup();
+								break;
+							case 5: //WriteFun
+								wfsetup();
+								break;
+							default:
+
+						}
+
 						contentcount = 0;
 						initstep++;
 					}
-
 				} else {
 
 					nanofunmostate = 0;
 				}
 
-//				rfsetup();
-
-//				lfsetup();
-
-//				tfsetup();
-
-//				wfsetup();
-
 			}
+
+			setTimeout(nanofunmo, 20);
+
 			break;
 		case 0: //state 0: not operating
 
@@ -144,5 +149,4 @@ function nanofunmo() {
 		default:
 	}
 
-	setTimeout(nanofunmo, 20);
 }
