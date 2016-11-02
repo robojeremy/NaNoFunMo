@@ -16,10 +16,17 @@ function rfsetup() {
 	readfuninput = createInput();
 	readfuninput.parent('ReadFunZone');
 	readfuninput.id('readfun');
-	readfuninput.input(readfun);
+	//readfuninput.input(readfun);
+	readfuninput.changed(readfun);
 }
 
 function readfun() {
 	readfundata = readfuninput.value();
+
+	var readtext = createP('').parent('ReadFunZone');
+	readtext.id('readtext');
+
+	readtext.html(readfundata);
+
 	writefun(readfundata);
 }

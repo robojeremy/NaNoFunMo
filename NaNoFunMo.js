@@ -1,4 +1,4 @@
-/*  NaNoFunMo.js ver. 0.2.2 NaNoWriMo Bot */
+/*  NaNoFunMo.js ver. 0.2.3 NaNoWriMo Bot */
 /*  
 	NaNoFunMo will algorithmically write a 50,000 word novel 
 	which may or may not be gibberish during NaNoWriMo. 
@@ -41,23 +41,23 @@ function setup() {
 
 	contents[0] = [
 		["div", "TitleZone", ""],
-		["h2", "maintitle", "NaNoFunMo ver. 0.2.2 NaNoWriMo Bot"],
+		["h2", "maintitle", "NaNoFunMo ver. 0.2.3 NaNoWriMo Bot"],
 		["p", "maindescription", "/* NaNoFunMo will algorithmically write a 50,000 word novel which may or may not be gibberish during NaNoWriMo. */"]
 	]
 	contents[1] = [
 		["div", "NaNoFunMoZone", ""],
 		["h3", "nnfh", "NaNoFunMo Lives Here"],
-		["p", "nnfp1", "/* NaNoFunMo is going to write. In order to write, NaNoFunMo will need to think. In order to think, NaNoFunMo will need to learn. In order to learn, NaNoFunMo will need to read. */"]
+		["p", "nnfp1", "/* NaNoFunMo is going to write. In order to write, NaNoFunMo will need to think. In order to think, NaNoFunMo will need to learn. In order to learn, NaNoFunMo will need to read. NaNoFunMo uses ReadFun, LearnFun, ThinkFun, and WriteFun. */"]
 	]
 	contents[2] = [
 		["div", "ReadFunZone", ""],
 		["h3", "rfh", "ReadFun Lives Here"],
-		["p", "rfp1", "/* ReadFun will read books. */"]
+		["p", "rfp1", "/* ReadFun will read texts. */"]
 	]
 	contents[3] = [
 		["div", "LearnFunZone", ""],
 		["h3", "lfh", "LearnFun Lives Here"],
-		["p", "lfp1", "/* LearnFun will learn from the books ReadFun reads. */"]
+		["p", "lfp1", "/* LearnFun will learn from the texts ReadFun reads. */"]
 	]
 	contents[4] = [
 		["div", "ThinkFunZone", ""],
