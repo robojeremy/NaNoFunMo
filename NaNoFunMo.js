@@ -1,4 +1,4 @@
-/*  NaNoFunMo.js ver. 0.2.3 NaNoWriMo Bot */
+/*  NaNoFunMo.js ver. 0.4.1 NaNoWriMo Bot */
 /*  
 	NaNoFunMo will algorithmically write a 50,000 word novel 
 	which may or may not be gibberish during NaNoWriMo. 
@@ -29,64 +29,39 @@ var elements = [];
 var elementcount;
 var currzone;
 
+//setup happens automatically at program startup
 function setup() {
 	noCanvas();
 
 	console.log("NaNoFunMo started");
+
+	initcontents(); //set up page contents
 
 	initstep = 0; //building
 	nanofunmostate = -1; //initializing 
 	contentcount = 0;
 	elementcount = 0;
 
-	contents[0] = [
-		["div", "TitleZone", ""],
-		["h2", "maintitle", "NaNoFunMo ver. 0.2.3 NaNoWriMo Bot"],
-		["p", "maindescription", "/* NaNoFunMo will algorithmically write a 50,000 word novel which may or may not be gibberish during NaNoWriMo. */"]
-	]
-	contents[1] = [
-		["div", "NaNoFunMoZone", ""],
-		["h3", "nnfh", "NaNoFunMo Lives Here"],
-		["p", "nnfp1", "/* NaNoFunMo is going to write. In order to write, NaNoFunMo will need to think. In order to think, NaNoFunMo will need to learn. In order to learn, NaNoFunMo will need to read. NaNoFunMo uses ReadFun, LearnFun, ThinkFun, and WriteFun. */"]
-	]
-	contents[2] = [
-		["div", "ReadFunZone", ""],
-		["h3", "rfh", "ReadFun Lives Here"],
-		["p", "rfp1", "/* ReadFun will read texts. */"]
-	]
-	contents[3] = [
-		["div", "LearnFunZone", ""],
-		["h3", "lfh", "LearnFun Lives Here"],
-		["p", "lfp1", "/* LearnFun will learn from the texts ReadFun reads. */"]
-	]
-	contents[4] = [
-		["div", "ThinkFunZone", ""],
-		["h3", "tfh", "ThinkFun Lives Here"],
-		["p", "tfp1", "/* ThinkFun will think about the stuff that LearnFun learns. */"]
-	]
-	contents[5] = [
-		["div", "WriteFunZone", ""],
-		["h3", "wfh", "WriteFun Lives Here"],
-		["p", "wfp1", "/* WriteFun will write based on stuff ThinkFun thinks. */"]
-	]
-
-	setTimeout(nanofunmo, 20);
+	//start running main loop
+	nanofunmo();
 }
 
 function nanofunmo() {
 
 	switch (nanofunmostate) {
 		case -1: //state -1: initializing 
-			if (typingdone == true) { //wait until TypeFun is ready
+			if (typeready == true) { //wait until TypeFun is ready
 
-				if ( initstep < contents.length ) { 
+				if ( initstep < contents.length ) { //remaining steps to initialize
 
-					if (contentcount < contents[initstep].length) { 
+					if (contentcount < contents[initstep].length) { //content to build
 						var eltag = contents[initstep][contentcount][0];
 						var elid = contents[initstep][contentcount][1];
-						var eltext = contents[initstep][contentcount][2];
+						var elclass = contents[initstep][contentcount][2];
+						var eltext = contents[initstep][contentcount][3];
 						elements[elementcount] = createElement(eltag, '');
 						elements[elementcount].id(elid);
+						elements[elementcount].class(elclass);
 
 						if ( eltag == "div" ) { //element is a div
 							currzone = elid;
@@ -99,19 +74,19 @@ function nanofunmo() {
 						}
 
 						contentcount++;
-					} else {
+					} else { //subprograms to initialize
 
 						switch (initstep) {
-							case 2: //ReadFun
+							case 2: //initialize ReadFun
 								rfsetup();
 								break;
-							case 3: //LearnFun
+							case 3: //initialize LearnFun
 								lfsetup();
 								break;
-							case 4: //ThinkFun
+							case 4: //initialize ThinkFun
 								tfsetup();
 								break;
-							case 5: //WriteFun
+							case 5: //initialize WriteFun
 								wfsetup();
 								break;
 							default:
@@ -119,19 +94,17 @@ function nanofunmo() {
 						}
 
 						contentcount = 0;
-						initstep++;
+						initstep++; //next step to initialize
 					}
-				} else {
+				} else { //finished initializing
 
 					nanofunmostate = 0;
 				}
 
 			}
 
-			setTimeout(nanofunmo, 20);
-
 			break;
-		case 0: //state 0: not operating
+		case 0: //state 0: not operating, waiting for user
 
 			break;
 		case 1: //state 1: readfun is reading
@@ -148,5 +121,53 @@ function nanofunmo() {
 			break;
 		default:
 	}
+
+	setTimeout(nanofunmo, 20); //loop continually 
+
+}
+
+//set up page contents
+function initcontents() {
+
+	contents[0] = [
+		["div", "TitleZone", "titlearea", ""],
+		["h2", "maintitle", "", "NaNoFunMo ver. 0.4.1 NaNoWriMo Bot"],
+		["p", "maindescription", "infotext", "/* NaNoFunMo will algorithmically write a " + 
+		"50,000 word novel which may or may not be gibberish during NaNoWriMo. */"]
+	]
+	contents[1] = [
+		["div", "NaNoFunMoZone", "zonearea", ""],
+		["h3", "nnfh", "zonetitle", "NaNoFunMo Lives Here"],
+		["p", "nnfp1", "infotext", "/* NaNoFunMo is going to write. In order to write, " + 
+		"NaNoFunMo will need to think. In order to think, NaNoFunMo will need to learn. " + 
+		"In order to learn, NaNoFunMo will need to read. " + 
+		"NaNoFunMo will use ReadFun, LearnFun, ThinkFun, and WriteFun. " + 
+		"v. 0.4.1 Only ReadFun and WriteFun currently do something.  */"]
+	]
+	contents[2] = [
+		["div", "ReadFunZone", "zonearea", ""],
+		["h3", "rfh", "zonetitle", "ReadFun Lives Here"],
+		["p", "rfp1", "infotext", "/* ReadFun will read texts. v.0.4.1 ReadFun distinguishes " + 
+		"words and punctuation. Currently sends text data directly to WriteFun. Type some text into the " + 
+		"input box for ReadFun to read. */"]
+	]
+	contents[3] = [
+		["div", "LearnFunZone", "zonearea", ""],
+		["h3", "lfh", "zonetitle", "LearnFun Lives Here"],
+		["p", "lfp1", "infotext", "/* LearnFun will learn from the texts ReadFun reads. " + 
+		"LearnFun does not do anything yet */"]
+	]
+	contents[4] = [
+		["div", "ThinkFunZone", "zonearea", ""],
+		["h3", "tfh", "zonetitle", "ThinkFun Lives Here"],
+		["p", "tfp1", "infotext", "/* ThinkFun will think about the stuff that LearnFun learns. " + 
+		"ThinkFun does not do anything yet. */"]
+	]
+	contents[5] = [
+		["div", "WriteFunZone", "zonearea", ""],
+		["h3", "wfh", "zonetitle", "WriteFun Lives Here"],
+		["p", "wfp1", "infotext", "/* WriteFun will write based on stuff ThinkFun thinks. " + 
+		"v.0.4.1 WriteFun receives text data and then writes randomly from the data. */"]
+	]
 
 }
