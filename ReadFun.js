@@ -16,6 +16,7 @@ var readfuntext;
 var readfunsentences = [];
 var readfundata = [];
 var readtext;
+var rfreading;
 var rfdataready;
 var rftokens = [];
 var pcount;
@@ -30,12 +31,20 @@ function rfsetup() {
 	readfuninput.size(250);
 	pcount = 0;
 	scount = 0;
-	readfuninput.changed(readfun);
-	rfdataready = true;
+	readfuninput.changed(startreading);
+	rfdataready = false;
+	rfreading = false;
+}
+
+function startreading() {
+	//set status flags
+	rfreading = true;
+	rfdataready = false; 
+
+	setTimeout(readfun, 40);
 }
 
 function readfun() {
-	rfdataready = false; //set status flag
 
 	//get new input to read
 	readfuntext = readfuninput.value(); //get text
@@ -85,12 +94,16 @@ function readfun() {
 				displaytext.class('rfword');
 			}
 
-			displaytext.html(rftokens[i]); //show text that was read
+			//show text that was read
+			displaytext.html(rftokens[i]); 
 		}
 
 	}
 
-	writefun(readfuntext); //send data to writefun
+	//send data to writefun
+	//writefun(readfuntext); 
 
-	rfdataready = true; //reset status flag
+	//reset status flags
+	rfdataready = true; 
+	rfreading = false;
 }

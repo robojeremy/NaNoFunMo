@@ -7,12 +7,13 @@ var typespeed = 70; //milliseconds per character
 var typeready = true;
 
 function typefun(field, data) {
+	//set status flag
+	typeready = false;
+
 	//get text and target
 	currfield = field;
 	currdata = data;
 
-	//set status flag
-	typeready = false;
 
 	//type the text
 	typer();

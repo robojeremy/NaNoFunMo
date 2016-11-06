@@ -9,14 +9,19 @@
 
 var writefunoutput = [];
 var outputcount = 0;
+var wfwriting;
 
 function wfsetup() {
+	wfwriting = false;
 	//make output area
 	createP("WriteFun Output:").parent('WriteFunZone');
 }
 
 function writefun(writefundata) {
 	//writefunoutput.html(data);
+
+	//set status flag
+	wfwriting = true;
 
 	//make a new paragraph for the new output
 	writefunoutput[outputcount] = createP("");
@@ -48,4 +53,6 @@ function writefun(writefundata) {
 
 	outputcount++;
 	
+	//reset status flag
+	wfwriting = false;
 }
