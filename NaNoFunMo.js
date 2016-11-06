@@ -1,4 +1,4 @@
-/*  NaNoFunMo.js ver. 0.4.1 NaNoWriMo Bot */
+/*  NaNoFunMo.js ver. 0.4.2 NaNoWriMo Bot */
 /*  
 	NaNoFunMo will algorithmically write a 50,000 word novel 
 	which may or may not be gibberish during NaNoWriMo. 
@@ -131,9 +131,10 @@ function initcontents() {
 
 	contents[0] = [
 		["div", "TitleZone", "titlearea", ""],
-		["h2", "maintitle", "", "NaNoFunMo ver. 0.4.1 NaNoWriMo Bot"],
+		["h2", "maintitle", "", "NaNoFunMo ver. 0.4.2 NaNoWriMo Bot"],
 		["p", "maindescription", "infotext", "/* NaNoFunMo will algorithmically write a " + 
-		"50,000 word novel which may or may not be gibberish during NaNoWriMo. */"]
+		"50,000 word novel which may or may not be gibberish during NaNoWriMo. " + 
+		"(Learn about NaNoWriMo at: <a href='http://nanowrimo.org'>http://nanowrimo.org</a>) */"]
 	]
 	contents[1] = [
 		["div", "NaNoFunMoZone", "zonearea", ""],
@@ -142,14 +143,14 @@ function initcontents() {
 		"NaNoFunMo will need to think. In order to think, NaNoFunMo will need to learn. " + 
 		"In order to learn, NaNoFunMo will need to read. " + 
 		"NaNoFunMo will use ReadFun, LearnFun, ThinkFun, and WriteFun. " + 
-		"v. 0.4.1 Only ReadFun and WriteFun currently do something.  */"]
+		"v.0.4.2 Only ReadFun and WriteFun currently do something.  */"]
 	]
 	contents[2] = [
 		["div", "ReadFunZone", "zonearea", ""],
 		["h3", "rfh", "zonetitle", "ReadFun Lives Here"],
-		["p", "rfp1", "infotext", "/* ReadFun will read texts. v.0.4.1 ReadFun distinguishes " + 
-		"words and punctuation. Currently sends text data directly to WriteFun. Type some text into the " + 
-		"input box for ReadFun to read. */"]
+		["p", "rfp1", "infotext", "/* ReadFun will read texts. v.0.4.2 ReadFun separates paragraphs and " + 
+		"sentences, and distinguishes words and punctuation. Currently sends text data directly to " + 
+		"WriteFun. Type some text into the input box for ReadFun to read. */"]
 	]
 	contents[3] = [
 		["div", "LearnFunZone", "zonearea", ""],
@@ -167,7 +168,7 @@ function initcontents() {
 		["div", "WriteFunZone", "zonearea", ""],
 		["h3", "wfh", "zonetitle", "WriteFun Lives Here"],
 		["p", "wfp1", "infotext", "/* WriteFun will write based on stuff ThinkFun thinks. " + 
-		"v.0.4.1 WriteFun receives text data and then writes randomly from the data. */"]
+		"v.0.4.2 WriteFun receives text data and then writes randomly from the data. */"]
 	]
 
 }
