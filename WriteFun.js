@@ -2,11 +2,11 @@
 /* 
 	WriteFun will write based on stuff ThinkFun thinks. 
 
-	v.0.2 WriteFun simply outputs thoughtlessly whatever
+	v.0.3 WriteFun simply outputs thoughtlessly whatever
 	you give it.
 */
 
-
+var writefundata;
 var writefunoutput = [];
 var outputcount = 0;
 var wfwriting;
@@ -17,11 +17,17 @@ function wfsetup() {
 	createP("WriteFun Output:").parent('WriteFunZone');
 }
 
-function writefun(writefundata) {
-	//writefunoutput.html(data);
+function wfreceive(data) {
+	//save a copy of the received data
+	writefundata = data;
 
 	//set status flag
 	wfwriting = true;
+
+	setTimeout(writefun, 30);
+}
+
+function writefun() {
 
 	//make a new paragraph for the new output
 	writefunoutput[outputcount] = createP("");

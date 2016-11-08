@@ -1,4 +1,4 @@
-/*  NaNoFunMo.js ver. 0.4.4 NaNoWriMo Bot */
+/*  NaNoFunMo.js ver. 0.6.1 NaNoWriMo Bot */
 /*  
 	NaNoFunMo will algorithmically write a 50,000 word novel 
 	which may or may not be gibberish during NaNoWriMo. 
@@ -116,15 +116,28 @@ function nanofunmo() {
 			break;
 		case 1: //state 1: readfun is reading
 
-			//ReadFun finished reading, go to state 4
+			//ReadFun finished reading, go to state 2
 			if ( (rfreading == false) && (rfdataready == true) ) {
-				select('#nnfstatus').html("WriteFun is writing");
-				select('#nnfstatus').class("status4");
-				nanofunmostate = 4;
+				select('#nnfstatus').html("LearnFun is learning");
+				select('#nnfstatus').class("status2");
+				nanofunmostate = 2;
 			}
 
 			break;
 		case 2: //state 2: learnfun is learning
+
+			//when entering state 2
+			if (rfdataready == true) {
+				lfreceive(readfundata); 
+				rfdataready = false;
+			}
+
+			//LearnFun finished learning, go to state 4
+			if ( (lflearning == false) && (lfdataready == true) ) {
+				select('#nnfstatus').html("WriteFun is writing");
+				select('#nnfstatus').class("status4");
+				nanofunmostate = 4;
+			}
 
 			break;
 		case 3: //state 3: thinkfun is thinking
@@ -133,10 +146,10 @@ function nanofunmo() {
 		case 4: //state 4: writefun is writing
 
 			//when entering state 4 
-			if (rfdataready == true) {
-				rfdataready = false;
+			if (lfdataready == true) {
 				//send data to writefun
-				writefun(readfuntext); 
+				wfreceive(readfuntext); 
+				lfdataready = false;
 			}
 
 			//WriteFun finished writing, go to state 0
@@ -159,7 +172,7 @@ function initcontents() {
 
 	contents[0] = [
 		["div", "TitleZone", "titlearea", ""],
-		["h2", "maintitle", "", "NaNoFunMo ver. 0.4.4 NaNoWriMo Bot"],
+		["h2", "maintitle", "", "NaNoFunMo ver. 0.6.1 NaNoWriMo Bot"],
 		["p", "maindescription", "infotext", "/* NaNoFunMo will algorithmically write a " + 
 		"50,000 word novel which may or may not be gibberish during NaNoWriMo. " + 
 		"(Learn about NaNoWriMo at: <a href='http://nanowrimo.org'>http://nanowrimo.org</a>) " + 
@@ -172,13 +185,13 @@ function initcontents() {
 		"NaNoFunMo will need to think. In order to think, NaNoFunMo will need to learn. " + 
 		"In order to learn, NaNoFunMo will need to read. " + 
 		"NaNoFunMo will use ReadFun, LearnFun, ThinkFun, and WriteFun. " + 
-		"v.0.4.4 Only ReadFun and WriteFun currently do something. */"],
+		"v.0.6.1 Only ReadFun, LearnFun and WriteFun currently do something. */"],
 		["span", "nnfstatus", "status0", "Initializing..."]
 	]
 	contents[2] = [
 		["div", "ReadFunZone", "zonearea", ""],
 		["h3", "rfh", "zonetitle", "ReadFun"],
-		["p", "rfinfo", "infotext", "/* ReadFun will read texts. v.0.4.4 ReadFun separates paragraphs and " + 
+		["p", "rfinfo", "infotext", "/* ReadFun will read texts. ReadFun separates paragraphs and " + 
 		"sentences, and distinguishes words and punctuation. ReadFun then provides its data for " + 
 		"NaNoFunMo to use. Type some text into the input box for ReadFun to read. */"]
 	]
@@ -186,7 +199,8 @@ function initcontents() {
 		["div", "LearnFunZone", "zonearea", ""],
 		["h3", "lfh", "zonetitle", "LearnFun"],
 		["p", "lfinfo", "infotext", "/* LearnFun will learn from the texts ReadFun reads. " + 
-		"LearnFun does not do anything yet */"]
+		"LearnFun should list tokens it has learned. LearnFun should sort tokens by beginnings, " + 
+		"middles, and ends of sentences. */"]
 	]
 	contents[4] = [
 		["div", "ThinkFunZone", "zonearea", ""],
@@ -198,7 +212,7 @@ function initcontents() {
 		["div", "WriteFunZone", "zonearea", ""],
 		["h3", "wfh", "zonetitle", "WriteFun"],
 		["p", "wfinfo", "infotext", "/* WriteFun will write based on stuff ThinkFun thinks. " + 
-		"v.0.4.4 WriteFun receives text data and then writes randomly from the data. */"]
+		"WriteFun receives text data and then writes randomly from the data. */"]
 	]
 
 }

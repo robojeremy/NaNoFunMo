@@ -1,27 +1,27 @@
-/* ReadFun.js ver. 0.5 */
+/* ReadFun.js ver. 0.6 */
 /* 
 	ReadFun will read books or other text in English.
 	ReadFun will be able to:
 	- break a text down by words, spaces, punctuation, 
 	  sentences and paragraphs.
 
-	v.0.5 ReadFun simply inputs text directly from a user
-	via a text input box and sends it thoughtlessly directly
-	to WriteFun. ReadFun can distinguish words and 
-	punctuation. Should be able to separate sentences.
+	v.0.6 ReadFun inputs text from a user via a text input 
+	box and then parses the text. ReadFun can separate 
+	sentences. ReadFun can distinguish words and punctuation.
+	ReadFun puts the parsed text into a data structure for
+	NaNoFunMo or other functions to use.  
 */
 
-var readfuninput;
-var readfuntext;
-var readfunsentences = [];
-var readfundata = [];
-var readtext;
-var rfreading;
-var rfdataready;
-var rftokens = [];
-var pcount;
-var scount;
-var rfwork;
+var readfuninput; //user input box
+var readfuntext; //text retrieved from input box
+var readfunsentences = []; //array of sentences
+var readfundata = []; //array of RiTa strings
+var rfreading; //ReadFun status flag
+var rfdataready; //data status flag
+var rftokens = []; //tokenized RiTa string
+var rfpcount; //paragraph counter
+var rfscount; //sentence counter
+var rfwork; //text parsing display area
 
 function rfsetup() {
 	createP('ReadFun Input:').parent('ReadFunZone');
@@ -29,46 +29,44 @@ function rfsetup() {
 	readfuninput.parent('ReadFunZone');
 	readfuninput.id('readfun');
 	readfuninput.size(250);
-	pcount = 0;
-	scount = 0;
-	readfuninput.changed(startreading);
+	rfpcount = 0;
+	rfscount = 0;
+	readfuninput.changed(rfreceive);
 	rfdataready = false;
 	rfreading = false;
 }
 
-function startreading() {
+function rfreceive() {
 	//set status flags
 	rfreading = true;
 	rfdataready = false; 
+
+	//get new input to read
+	readfuntext = readfuninput.value(); //get text
 
 	setTimeout(readfun, 40);
 }
 
 function readfun() {
 
-	//get new input to read
-	readfuntext = readfuninput.value(); //get text
-//	readtext = createP('').parent('ReadFunZone');
-//	readtext.html(readfuntext); //show text that was read
-
 	//open up work area if it hasn't been already
-	if (pcount == 0) {
+	if (rfpcount == 0) {
 		rfwork = createElement('div', '');
 		rfwork.parent('ReadFunZone');
 		rfwork.id('rfworkarea');
 	}
 
 	//make a new paragraph display element for the new input
-	pcount++;
+	rfpcount++;
 	var rfparagraph = createElement('p', '');
 	rfparagraph.parent('rfworkarea');
 	rfparagraph.class('rfparagraph');
-	rfparagraph.id('rp' + pcount);
+	rfparagraph.id('rp' + rfpcount);
 
 	//parse text
 	readfunsentences = RiTa.splitSentences(readfuntext);
 
-	scount = 0;
+	rfscount = 0;
 	for (var j = 0; j < readfunsentences.length; j++) {
 
 		//convert a sentence into a RiTa string
@@ -77,16 +75,16 @@ function readfun() {
 		rftokens = readfundata[j].words(); 
 
 		//make a new sentence display element for each sentence
-		scount++;
+		rfscount++;
 		var rfsentence  = createElement('span', '');
-		rfsentence.parent('rp' + pcount);
+		rfsentence.parent('rp' + rfpcount);
 		rfsentence.class('rfsentence');
-		rfsentence.id('rp' + pcount + 's' + scount);
+		rfsentence.id('rp' + rfpcount + 's' + rfscount);
 
 		//print out the sentence with tokenized words and punctuation
 		for (var i = 0; i < rftokens.length; i++) {
 			var displaytext = createElement('span', '');
-			displaytext.parent('rp' + pcount + 's' + scount);
+			displaytext.parent('rp' + rfpcount + 's' + rfscount);
 
 			if (RiTa.isPunctuation(rftokens[i])) {
 				displaytext.class('rfpunc');
@@ -99,9 +97,6 @@ function readfun() {
 		}
 
 	}
-
-	//send data to writefun
-	//writefun(readfuntext); 
 
 	//reset status flags
 	rfdataready = true; 
